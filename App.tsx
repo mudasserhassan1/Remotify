@@ -1,45 +1,32 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
+ * Remotify — Android TV Remote
  * @format
  */
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
-
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
-}
+import React from 'react';
+import {StatusBar, View} from 'react-native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {useInterstitialOnBackground} from './src/hooks/useInterstitialOnBackground';
+import {TvProvider} from './src/context/TvContext';
+import {HomeScreen} from './src/screens/HomeScreen';
+import {colors} from './src/theme/colors';
 
 function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
+  useInterstitialOnBackground();
+  return <HomeScreen />;
+}
 
+function App() {
   return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
+    <View style={{flex: 1, backgroundColor: colors.background}}>
+      <SafeAreaProvider>
+        <StatusBar barStyle="light-content" backgroundColor={colors.background} />
+        <TvProvider>
+          <AppContent />
+        </TvProvider>
+      </SafeAreaProvider>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;
